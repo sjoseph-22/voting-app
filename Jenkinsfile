@@ -59,7 +59,9 @@ pipeline {
                         echo "Deploying ${service} to Kubernetes..."
                     
                         sh "kubectl apply -f k8s-specifications/${service}-deployment.yaml"
-                        sh "kubectl apply -f k8s-specifications/${service}-service.yaml"
+                        if (service != 'worker') {
+                            sh "kubectl apply -f k8s-specifications/${service}-service.yaml"
+                        }
 
                         def imageName = "${DOCKER_HUB_USER}/voting-app-${service}:${env.BUILD_NUMBER}"
                         sh "kubectl set image deployment/${service} ${service}=${imageName}"
