@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'agent' }
 
     environment {
         DOCKER_HUB_USER = 'sjoseph22'
@@ -44,11 +44,34 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    echo "Deploying Infrastructure (DB & Redis)..."
+                    sh "kubectl apply -f k8s-specifications/db-deployment.yaml"
+                    sh "kubectl apply -f k8s-specifications/db-service.yaml"
+                    sh "kubectl apply -f k8s-specifications/redis-deployment.yaml"
+                    sh "kubectl apply -f k8s-specifications/redis-service.yaml"
+
+                    def services = ['vote', 'result', 'worker']
+                    
+                    for (service in services) {
+                        echo "Deploying ${service} to Kubernetes..."
+                    
+                        sh "kubectl apply -f k8s-specifications/${service}-deployment.yaml"
+                        sh "kubectl apply -f k8s-specifications/${service}-service.yaml"
+
+                        def imageName = "${DOCKER_HUB_USER}/voting-app-${service}:${env.BUILD_NUMBER}"
+                        sh "kubectl set image deployment/${service} ${service}=${imageName}"
+                    }
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo "All three images (Vote, Result, Worker) pushed successfully!"
+            echo "Pipeline Complete: Images built, pushed, and deployed to Minikube!"
         }
     }
 }
