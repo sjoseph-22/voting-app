@@ -39,6 +39,7 @@ terraform apply -auto-approve
 ```
 
 #### Step 2: Configuration Management
-Update the `inventory` file with your EC2 Public IPs and run the playbook:
+Create a directory ansible-playbooks and copy the two playbooks into the directory and run the playbook:
 ```bash
-ansible-playbook -i inventory setup-tools.yml
+ansible-playbook -i hosts.ini install_tools_master.yml
+ansible-playbook -i hosts.ini install_tools_agent.yml
