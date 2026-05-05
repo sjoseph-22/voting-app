@@ -1,0 +1,69 @@
+- name: Configure Agent
+  hosts: jenkins-agent
+  become: yes
+  tasks:
+    - name: Install prerequisites
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+        state: present
+        update_cache: yes
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Ensure Docker is started
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add Jenkins user to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
+    - name: Refresh SSH connection to apply group changes
+      meta: reset_connection
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install conntrack 
+      apt:
+        name:
+          - conntrack
+        state: present
+
+    - name: Download Minikube binary
+      get_url:
+        url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+        dest: /tmp/minikube-linux-amd64
+        mode: '0755'
+
+    - name: Install Minikube to /usr/local/bin
+      copy:
+        src: /tmp/minikube-linux-amd64
+        dest: /usr/local/bin/minikube
+        mode: '0755'
+        remote_src: yes
+
+    - name: Download Kubectl binary
+      get_url:
+        url: https://dl.k8s.io/release/v1.30.0/bin/linux/amd64/kubectl
+        dest: /usr/local/bin/kubectl
+        mode: '0755'
+
+    - name: Start Minikube
+      become: no
+      shell: minikube start --force --driver=docker
+      register: minikube_start
+      changed_when: "'Done!' in minikube_start.stdout"

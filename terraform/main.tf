@@ -17,7 +17,7 @@ provider "aws" {
 
 resource "aws_key_pair" "my_key_pair" {
    key_name="terraform-key"
-   public_key=file("terraform-key.pub")
+   public_key=file("${path.module}/ansible-playbooks/terraform-key.pub")
 }
 
 # VPC Default
@@ -82,8 +82,8 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic" {
 
 variable "instances" {
   default = {
-    "jenkins-master" = 8
-    "jenkins-agent"  = 15
+    "jenkins-master" = { disk_size = 8,  user = "ubuntu" }
+    "jenkins-agent"  = { disk_size = 15, user = "ubuntu" }
   }
 }
 resource "aws_instance" "my_instance" {
@@ -102,7 +102,7 @@ resource "aws_instance" "my_instance" {
 
   # root storage (EBS)
   root_block_device {
-    volume_size = each.value
+    volume_size = each.value.disk_size
     volume_type = "gp3"
   }
 
