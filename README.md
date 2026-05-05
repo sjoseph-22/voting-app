@@ -13,3 +13,32 @@ The application itself is a polyglot microservices suite consisting of six disti
 *   **Full-Stack Observability:** Integrated the **Prometheus & Grafana** stack via Helm to scrape real-time metrics and visualizing them through dashboards.
 
   <img width="2300" height="2000" alt="voting-app-project" src="https://github.com/user-attachments/assets/bc739650-32dd-45b3-b95a-2d1de4ed4dde" />
+
+## Steps to execute the project
+
+### Prerequisites
+
+Before starting, ensure you have the following installed and configured:
+
+*   **AWS Account:** An active AWS account with a configured IAM user possessing `AdministratorAccess`.
+*   **AWS CLI:** Installed and configured locally (`aws configure`) to interact with your cloud resources.
+*   **Terraform:** Installed (v1.0+) to manage and provision the infrastructure.
+*   **Ansible:** Installed on your local machine to handle configuration management.
+*   **Docker Hub Account:** To push and pull custom microservice images.
+
+### Deployment Steps
+
+#### Step 1: Infrastructure Provisioning
+Navigate to the terraform directory and initialize the environment:
+```bash
+cd terraform
+terraform init
+terraform validate
+terraform plan
+terraform apply -auto-approve
+```
+
+#### Step 2: Configuration Management
+Update the `inventory` file with your EC2 Public IPs and run the playbook:
+```bash
+ansible-playbook -i inventory setup-tools.yml
