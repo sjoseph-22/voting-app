@@ -41,5 +41,7 @@ terraform apply -auto-approve
 #### Step 2: Configuration Management
 Create a directory ansible-playbooks and copy the two playbooks into the directory and run the playbook:
 ```bash
+cd ansible-playbooks
 ansible-playbook -i hosts.ini install_tools_master.yml
 ansible-playbook -i hosts.ini install_tools_agent.yml
+```
