@@ -59,17 +59,12 @@ Enable Automated Triggers (GitHub Webhook):
 - Content type: Set to application/json.
 - Event: Select "Just the push event" and click Add webhook.
 
-#### Step 4: Installing Prometheus and Grafana using Helm
-
-Use the below links to install Prometheus and Grafana:<br>
-`https://medium.com/@gayatripawar401/deploy-prometheus-and-grafana-on-kubernetes-using-helm-5aa9d4fbae66`
-
-
-#### Step 5: Accessing the Applications & Monitoring
+#### Step 4: Accessing the Applications & Monitoring
 
 Once the pipeline has finished, you can access the applications. 
 
-Since we are deploying are kubernetes pods in an EC2 instance, we need to use `kubectl port-forward`
+Since we are deploying are kubernetes pods in an EC2 instance, we need to use `kubectl port-forward` in EC2-agent instance.
+You can SSH into it using the key created while provisioning AWS instance using Terraform.
 
 | Service | Port-forward | Access Method |
 | :--- | :--- | :--- |
@@ -89,7 +84,7 @@ Select data-source as **Prometheus** and use any pre-built templates for making 
 
 <img width="959" height="442" alt="grafana" src="https://github.com/user-attachments/assets/10dd4352-74a0-4cfa-8da2-0ef908fc32e2" />
 
-#### Step 6: Cleanup
+#### Step 5: Cleanup
 To avoid ongoing AWS charges, destroy the infrastructure when finished:
 ```bash
 terraform destroy -auto-approve
