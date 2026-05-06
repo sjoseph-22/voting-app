@@ -58,7 +58,7 @@ Enable Automated Triggers (GitHub Webhook):
 
 - In Jenkins: Under your Job Configuration, check the box for "GitHub hook trigger for GITScm polling".
 - In GitHub: Go to your Repository Settings > Webhooks > Add webhook.
-- Payload URL: Enter http://<EC2-jenkins-master-IP>:8080/github-webhook/.
+- Payload URL: Enter `http://<EC2-jenkins-master-IP>:8080/github-webhook/`.
 - Content type: Set to application/json.
 - Event: Select "Just the push event" and click Add webhook.
 
