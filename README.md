@@ -10,7 +10,7 @@ The application itself is a polyglot microservices suite consisting of six disti
 *   **Configuration Management:** Employed **Ansible** playbooks to automate the installation of the Docker engine, Kubernetes (Minikube), and Jenkins dependencies across the cluster nodes.
 *   **Distributed CI/CD:** Implemented a **Jenkins Master-Agent architecture** and automated the complete CI/CD flow using Jenkins pipeline.
 *   **Container Orchestration:** Deployed the 6-service stack using **Docker** and **Kubernetes**.
-*   **Full-Stack Observability:** Integrated the **Prometheus & Grafana** stack via Helm to scrape real-time metrics and visualizing them through dashboards.
+*   **Observability:** Integrated the **Prometheus & Grafana** stack via Helm to scrape real-time metrics and visualizing them through dashboards.
 
   <img width="2300" height="2000" alt="voting-app-project" src="https://github.com/user-attachments/assets/bc739650-32dd-45b3-b95a-2d1de4ed4dde" />
 
