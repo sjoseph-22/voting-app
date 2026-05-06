@@ -53,18 +53,42 @@ Don't write every single click, just the main goals:
 
 #### Step 4: Installing Prometheus and Grafana using Helm
 
+Use the below links to install Prometheus and Grafana:<br>
+`https://medium.com/@gayatripawar401/deploy-prometheus-and-grafana-on-kubernetes-using-helm-5aa9d4fbae66`
+
 
 #### Step 5: Accessing the Applications & Monitoring
 
 Once the pipeline has finished, you can access the applications. 
 
-> **Note on Connectivity:** 
-> * **Remote Access:** Use the **EC2 Public IP** of your Jenkins Agent instance. Ensure your AWS Security Group allows inbound traffic on the ports listed below.
-> * **Local Access (via EC2):** If you are accessing these from within another EC2 instance (or if the ports are not exposed publicly), you must use `kubectl port-forward` to map the service to `0.0.0.0`.
+Since we are deploying are kubernetes pods in an EC2 instance, we need to use `kubectl port-forward`
 
-| Service | Address | Access Method |
+| Service | Port-forward | Access Method |
 | :--- | :--- | :--- |
-| **Voting App** | `http://<EC2-jenkins-agent-IP>:31000` | Port-forward: `kubectl port-forward --address 0.0.0.0 svc/vote-service 8000:8080` |
-| **Result App** | `http://<EC2-jenkins-agent-IP>:31001` | Port-forward: `kubectl port-forward --address 0.0.0.0 svc/result-service 8001:8081` |
+| **Voting App** | Port-forward: `kubectl port-forward --address 0.0.0.0 svc/vote-service 8000:8080` | `http://<EC2-jenkins-agent-IP>:8000` |
+| **Result App** | Port-forward: `kubectl port-forward --address 0.0.0.0 svc/result-service 8001:8081` | `http://<EC2-jenkins-agent-IP>:8001` |
+| **Prometheus** | Port-forward: `kubectl port-forward --address 0.0.0.0 svc/prometheus-server-ext 9090:80`  | `http://<EC2-jenkins-agent-IP>:9090` |
+| **Grafana** | Port-forward: `kubectl port-forward --address 0.0.0.0 svc/grafana-ext 9091:80` | `http://<EC2-jenkins-agent-IP>:9091` |
+
+Use the Grafana IP to access the dashboard:
+
+##### Get Grafana Login Credentials:
+By default, the username is `admin`. To retrieve the auto-generated password, run:
+```bash
+kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+```
+Select data-source as **Prometheus** and use any pre-built templates for making dashboards.
+
+<img width="959" height="442" alt="grafana" src="https://github.com/user-attachments/assets/10dd4352-74a0-4cfa-8da2-0ef908fc32e2" />
+
+#### Step 6: Cleanup
+To avoid ongoing AWS charges, destroy the infrastructure when finished:
+```bash
+terraform destroy -auto-approve
+```
+
+
+
+
 
 
