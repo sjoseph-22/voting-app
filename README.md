@@ -51,7 +51,10 @@ Don't write every single click, just the main goals:
 *   Create a new Pipeline job and point it to this GitHub repository.
 *   Build the pipeline to deploy the microservices to Kubernetes.
 
-#### Step 4: Accessing the Applications & Monitoring
+#### Step 4: Installing Prometheus and Grafana using Helm
+
+
+#### Step 5: Accessing the Applications & Monitoring
 
 Once the pipeline has finished, you can access the applications. 
 
@@ -61,6 +64,7 @@ Once the pipeline has finished, you can access the applications.
 
 | Service | Address | Access Method |
 | :--- | :--- | :--- |
-| **Voting App** | `http://<EC2-jenkins-agent-IP>:8000` | Port-forward: `kubectl port-forward --address 0.0.0.0 svc/vote 8000:80` |
-| **Result App** | `http://<EC2-jenkins-agent-IP>:8001` | Port-forward: `kubectl port-forward --address 0.0.0.0 svc/result 8001:80` |
-| **Grafana** | `http://<EC2-jenkins-agent-IP>:3000` | Port-forward: `kubectl port-forward --address 0.0.0.0 svc/grafana 3000:80` |
+| **Voting App** | `http://<EC2-jenkins-agent-IP>:31000` | Port-forward: `kubectl port-forward --address 0.0.0.0 svc/vote-service 8000:8080` |
+| **Result App** | `http://<EC2-jenkins-agent-IP>:31001` | Port-forward: `kubectl port-forward --address 0.0.0.0 svc/result-service 8001:8081` |
+
+
