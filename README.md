@@ -23,6 +23,9 @@ Before starting, ensure you have the following installed and configured:
 *   **AWS Account:** An active AWS account with a configured IAM user possessing `AdministratorAccess`.
 *   **AWS CLI:** Installed and configured locally (`aws configure`) to interact with your cloud resources.
 *   **Terraform:** Installed to manage and provision the infrastructure.
+*   **Docker:** To build and push microservice images.
+*   **Kubernetes:** To deploy containers and manage them.
+*   **Helm:** Kubernetes package manager to install Prometheus and Grafana.
 *   **Ansible:** Installed on your local machine to handle configuration management.
 *   **Docker Hub Account:** To push and pull custom microservice images.
 
