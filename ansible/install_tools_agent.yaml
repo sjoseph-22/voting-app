@@ -67,3 +67,53 @@
       shell: minikube start --force --driver=docker
       register: minikube_start
       changed_when: "'Done!' in minikube_start.stdout"
+
+    - name: Wait for Minikube to be ready
+      pause:
+        seconds: 45
+
+    - name: Download Helm installer script
+      get_url:
+        url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+        dest: /tmp/get_helm.sh
+        mode: '0755'
+
+    - name: Run Helm installer
+      shell: /tmp/get_helm.sh
+      args:
+        creates: /usr/local/bin/helm
+
+    - name: Add Prometheus community Helm repo
+      become: no
+      shell: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+    - name: Add Grafana Helm repo
+      become: no
+      shell: helm repo add grafana https://grafana.github.io/helm-charts
+
+    - name: Update Helm repositories
+      become: no
+      shell: helm repo update
+
+    - name: Create Monitoring Namespace
+      become: no
+      shell: kubectl create namespace monitoring
+      ignore_errors: yes
+
+    - name: Install Prometheus
+      become: no
+      shell: helm install prometheus prometheus-community/prometheus --namespace monitoring
+
+    - name: Install Grafana
+      become: no
+      shell: helm install grafana grafana/grafana --namespace monitoring
+
+    - name: Expose Prometheus Service
+      become: no
+      shell: kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext --namespace monitoring
+      ignore_errors: yes
+
+    - name: Expose Grafana Service
+      become: no
+      shell: kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext --namespace monitoring
+      ignore_errors: yes
