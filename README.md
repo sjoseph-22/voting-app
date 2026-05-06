@@ -49,10 +49,18 @@ ansible-playbook -i hosts.ini install_tools_master.yml
 ansible-playbook -i hosts.ini install_tools_agent.yml
 ```
 #### Step 3: CI/CD Pipeline (Jenkins)
-Don't write every single click, just the main goals:
 *   Access Jenkins at `http://<EC2-jenkins-master-IP>:8080`.
 *   Create a new Pipeline job and point it to this GitHub repository.
 *   Build the pipeline to deploy the microservices to Kubernetes.
+
+Enable Automated Triggers (GitHub Webhook):
+* To ensure the pipeline runs automatically on every git push:
+
+- In Jenkins: Under your Job Configuration, check the box for "GitHub hook trigger for GITScm polling".
+- In GitHub: Go to your Repository Settings > Webhooks > Add webhook.
+- Payload URL: Enter http://<EC2-jenkins-master-IP>:8080/github-webhook/.
+- Content type: Set to application/json.
+- Event: Select "Just the push event" and click Add webhook.
 
 #### Step 4: Installing Prometheus and Grafana using Helm
 
