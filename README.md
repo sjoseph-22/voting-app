@@ -50,6 +50,8 @@ ansible-playbook -i hosts.ini install_tools_agent.yml
 *   Create a new Pipeline job and point it to this GitHub repository.
 *   Build the pipeline to deploy the microservices to Kubernetes.
 
+(Make sure to add your dockerhub id in the Jenkinsfile)
+
 Enable Automated Triggers (GitHub Webhook):
 * To ensure the pipeline runs automatically on every git push:
 
